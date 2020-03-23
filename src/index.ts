@@ -41,7 +41,6 @@ const startServer = async () => {
   );
 
   // SESSION MIDDLEWARE (needs to be added before 'apolloServer.applyMiddleware' )
-
   app.use(
     session({
       store: new MongoStore({
