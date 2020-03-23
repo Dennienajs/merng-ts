@@ -4,12 +4,10 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import Express from "express";
 import session from "express-session";
-// import connectRedis from "connect-redis";
 import connectMongo from "connect-mongo";
 import cors from "cors";
 
 import { RegisterResolver } from "./modules/user/Register";
-// import { redis } from "./redis";
 import { LoginResolver } from "./modules/user/Login";
 import { MeResolver } from "./modules/user/Me";
 
