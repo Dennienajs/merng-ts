@@ -1,13 +1,25 @@
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Arg,
+  UseMiddleware,
+  Ctx
+} from "type-graphql";
 import bcrypt from "bcryptjs";
 import { User } from "../../entity/User";
-// eslint-disable-next-line no-unused-vars
 import { RegisterInput } from "./register/RegisterInput";
+import { isAuth } from "./middleware/isAuth";
+import { logger } from "./middleware/logger";
+import { sendEmail } from "../utils/sendEmail";
+import { createConfirmationUrl } from "../utils/createConfirmationUrl";
+import { MyContext } from "src/types/MyContext";
 
 @Resolver()
 export class RegisterResolver {
+  @UseMiddleware(isAuth, logger)
   @Query(() => String)
-  async helloWorld() {
+  async hello() {
     return "Hello World!";
   }
 
@@ -28,6 +40,9 @@ export class RegisterResolver {
       email,
       password: hashedPassword
     }).save(); // .save to save to the db
+
+    // TODO: EMAIL CONFIRMATION
+    // await sendEmail(email, await createConfirmationUrl(user.id));
 
     return user; // returning our response
   }

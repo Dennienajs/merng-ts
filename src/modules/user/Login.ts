@@ -14,17 +14,25 @@ export class LoginResolver {
     @Ctx() ctx: MyContext
   ): Promise<User | null> {
     // Looks for user email
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      where: { email }
+    });
 
+    // user not found
     if (!user) {
       return null;
     }
 
     const valid = await bcrypt.compare(password, user.password);
-
+    // wrong password
     if (!valid) {
       return null;
     }
+
+    // TODO: ADD EMAIL CONFIRMATION
+    // if (!user.confirmedEmail) {
+    //   return null; // may want to throw back a message here instead of just null
+    // }
 
     // Here - we found a user & the password was correct. Good to go.
     // Send back a cookie

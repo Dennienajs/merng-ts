@@ -29,4 +29,9 @@ export class User extends BaseEntity {
   // No 'Field' here since we dont want to expose the password.
   @Column()
   password: string;
+
+  // TODO: ADD EMAIL CONFIRMATION LOGIC
+  // No "field" since we dont want to show it on the gql, just in the db.
+  @Column("bool", { default: false }) // defaults to false
+  confirmedEmail: boolean;
 }
