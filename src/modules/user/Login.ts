@@ -1,7 +1,6 @@
 import { Resolver, Mutation, Arg, Ctx } from "type-graphql";
 import bcrypt from "bcryptjs";
 import { User } from "../../entity/User";
-// eslint-disable-next-line no-unused-vars
 import { MyContext } from "../../../src/types/MyContext";
 
 @Resolver()
@@ -28,11 +27,6 @@ export class LoginResolver {
     if (!valid) {
       return null;
     }
-
-    // TODO: ADD EMAIL CONFIRMATION
-    // if (!user.confirmedEmail) {
-    //   return null; // may want to throw back a message here instead of just null
-    // }
 
     // Here - we found a user & the password was correct. Good to go.
     // Send back a cookie

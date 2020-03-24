@@ -10,6 +10,7 @@ import cors from "cors";
 import { RegisterResolver } from "./modules/user/Register";
 import { LoginResolver } from "./modules/user/Login";
 import { MeResolver } from "./modules/user/Me";
+import { LogoutResolver } from "./modules/user/Logout";
 
 const PORT = process.env.PORT || 4000;
 
@@ -19,7 +20,7 @@ const startServer = async () => {
 
   // Build schema (aka typeDefs) from resolvers
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, MeResolver],
+    resolvers: [RegisterResolver, LoginResolver, MeResolver, LogoutResolver],
     authChecker: ({ context: { req } }) => {
       // Here you can read user from context and check his permissions in the db
       // against `roles` argument that comes from `@Authorized`, eg. ["ADMIN", "MODERATOR"]
@@ -32,7 +33,7 @@ const startServer = async () => {
   // New ApolloServer
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req }) => ({ req }) // ApolloServer gives us access to the "request" object from express and we can access the sesison data based on this.
+    context: ({ req, res }) => ({ req, res }) // ApolloServer gives us access to the "request" object from express and we can access the sesison data based on this.
   });
 
   // Express Application
