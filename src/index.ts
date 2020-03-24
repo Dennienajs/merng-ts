@@ -19,7 +19,14 @@ const startServer = async () => {
 
   // Build schema (aka typeDefs) from resolvers
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, MeResolver]
+    resolvers: [RegisterResolver, LoginResolver, MeResolver],
+    authChecker: ({ context: { req } }) => {
+      // Here you can read user from context and check his permissions in the db
+      // against `roles` argument that comes from `@Authorized`, eg. ["ADMIN", "MODERATOR"]
+
+      // Authorized if user - this is basically "is the user logged in or not."
+      return !!req.session.userId; // return true/false "!!"
+    }
   });
 
   // New ApolloServer
@@ -61,11 +68,11 @@ const startServer = async () => {
   // Applying middleware
   apolloServer.applyMiddleware({ app }); // app is from an existing express app
 
-  app.listen({ port: PORT }, () =>
+  app.listen({ port: PORT }, () => {
     console.log(
       `🚀 Server running at http://localhost:4000${apolloServer.graphqlPath}`
-    )
-  );
+    );
+  });
 };
 
 startServer();
